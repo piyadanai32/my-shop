@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FaCartPlus } from 'react-icons/fa';
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // การจัดการสถานะการเข้าสู่ระบบ
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -21,7 +24,27 @@ const ProductsPage = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    // ตรวจสอบสถานะการเข้าสู่ระบบ
+    const checkAuthStatus = async () => {
+      try {
+        const response = await fetch('/api/auth/signin'); // เปลี่ยนเป็น URL ที่ตรวจสอบสถานะการเข้าสู่ระบบ
+        const data = await response.json();
+        setIsAuthenticated(data.isAuthenticated);
+      } catch (error) {
+        console.error('Failed to check authentication status', error);
+      }
+    };
+
+    checkAuthStatus();
+  }, []);
+
   const handleAddToCart = async (productId) => {
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
+
     try {
       await fetch('/api/carts', {
         method: 'POST',

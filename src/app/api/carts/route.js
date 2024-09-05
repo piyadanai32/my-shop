@@ -1,46 +1,59 @@
-import { PrismaClient } from '@prisma/client';
-import { NextResponse } from 'next/server';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/ilb/nextAuth";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// GET: ดึงข้อมูลสินค้าที่อยู่ในตะกร้า
-export async function GET() {
-  try {
-    const cartItems = await prisma.cartItem.findMany({
-      include: { product: true }, // ดึงข้อมูลผลิตภัณฑ์ที่เกี่ยวข้องด้วย
-    });
-    return NextResponse.json(cartItems);
-  } catch (error) {
-    console.error('Error fetching cart items:', error); // เพิ่มการ log ข้อผิดพลาด
-    return NextResponse.json({ error: 'Failed to fetch cart items' }, { status: 500 });
-  }
-}
-
-// POST: เพิ่มสินค้าไปยังตะกร้า
 export async function POST(req) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user || !session.user.id) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+  }
+
+  const userId = session.user.id;
   const { productId, quantity } = await req.json();
 
+  console.log('User ID:', userId);
+  console.log('Product ID:', productId);
+  console.log('Quantity:', quantity);
+
   try {
-    // ตรวจสอบว่ามีรายการในตะกร้าอยู่แล้วหรือไม่
-    const existingCartItem = await prisma.cartItem.findFirst({
-      where: { productId: productId },
+    const cartItem = await prisma.cartItem.create({
+      data: {
+        product: { connect: { id: productId } },
+        user: { connect: { id: userId } },
+        quantity: quantity
+      }
     });
 
-    if (existingCartItem) {
-      // อัปเดตจำนวนสินค้าที่มีอยู่
-      const updatedCartItem = await prisma.cartItem.update({
-        where: { id: existingCartItem.id },
-        data: { quantity: existingCartItem.quantity + quantity },
-      });
-      return NextResponse.json(updatedCartItem, { status: 200 });
-    } else {
-      // เพิ่มรายการใหม่ไปยังตะกร้า
-      const newCartItem = await prisma.cartItem.create({
-        data: { productId, quantity },
-      });
-      return NextResponse.json(newCartItem, { status: 201 });
-    }
+    return new Response(JSON.stringify(cartItem), { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to add item to cart' }, { status: 500 });
+    console.error('Error adding item to cart:', error);
+    return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
   }
 }
+
+// GET: ดึงข้อมูลสินค้าที่อยู่ในตะกร้า
+export async function GET(req) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user || !session.user.id) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+  }
+
+  const userId = session.user.id;
+
+  try {
+    const cartItems = await prisma.cartItem.findMany({
+      where: { userId: userId },
+      include: { product: true } // Include product details if needed
+    });
+
+    return new Response(JSON.stringify(cartItems), { status: 200 });
+  } catch (error) {
+    console.error('Error fetching cart items:', error);
+    return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+  }
+}
+

@@ -1,11 +1,23 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const CartPage = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
+    if (status === 'loading') return; // รอจนกว่าการตรวจสอบสถานะจะเสร็จสิ้น
+
+    if (!session) {
+      // ถ้าผู้ใช้ไม่ได้เข้าสู่ระบบ, เปลี่ยนเส้นทางไปยังหน้า login
+      router.push('/login');
+      return;
+    }
+
     const fetchCartItems = async () => {
       try {
         const response = await fetch('/api/carts');
@@ -21,24 +33,29 @@ const CartPage = () => {
     };
 
     fetchCartItems();
-  }, []);
+  }, [session, status, router]);
 
   const handleQuantityChange = async (id, newQuantity) => {
     if (newQuantity < 1) return; // Quantity must be at least 1
 
     try {
-      await fetch(`/api/carts/${id}`, {
+      const response = await fetch(`/api/carts/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ quantity: newQuantity }),
       });
-      setCartItems((prev) =>
-        prev.map((item) =>
-          item.id === id ? { ...item, quantity: newQuantity } : item
-        )
-      );
+
+      if (response.ok) {
+        setCartItems((prev) =>
+          prev.map((item) =>
+            item.id === id ? { ...item, quantity: newQuantity } : item
+          )
+        );
+      } else {
+        console.error('Failed to update quantity');
+      }
     } catch (error) {
       console.error('Failed to update quantity', error);
     }
@@ -46,10 +63,15 @@ const CartPage = () => {
 
   const handleRemoveFromCart = async (id) => {
     try {
-      await fetch(`/api/carts/${id}`, {
+      const response = await fetch(`/api/carts/${id}`, {
         method: 'DELETE',
       });
-      setCartItems((prev) => prev.filter((item) => item.id !== id));
+
+      if (response.ok) {
+        setCartItems((prev) => prev.filter((item) => item.id !== id));
+      } else {
+        console.error('Failed to remove item from cart');
+      }
     } catch (error) {
       console.error('Failed to remove item from cart', error);
     }
@@ -66,7 +88,8 @@ const CartPage = () => {
             <li key={item.id}>
               <h2>{item.product.name}</h2>
               <p>Price: ${item.product.price}</p>
-              <p>Quantity: 
+              <p>
+                Quantity: 
                 <button onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>-</button>
                 {item.quantity}
                 <button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>+</button>

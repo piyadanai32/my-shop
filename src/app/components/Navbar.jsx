@@ -12,6 +12,7 @@ function Navbar() {
             <ul className='flex'>
                 <li className='mx-3'><Link href="/products">Products</Link></li>
                 <li className='mx-3'><Link href="/carts">Cart</Link></li>
+                <li className='mx-3'><Link href="/profile">Profile</Link></li>
             </ul>
         </div>
       </div>
