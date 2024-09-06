@@ -7,7 +7,7 @@ import { FaCartPlus } from 'react-icons/fa';
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // การจัดการสถานะการเข้าสู่ระบบ
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // จัดการสถานะการเข้าสู่ระบบ
   const router = useRouter();
 
   useEffect(() => {
@@ -28,9 +28,9 @@ const ProductsPage = () => {
     // ตรวจสอบสถานะการเข้าสู่ระบบ
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch('/api/auth/signin'); // เปลี่ยนเป็น URL ที่ตรวจสอบสถานะการเข้าสู่ระบบ
+        const response = await fetch('/api/auth/session'); // URL ที่ตรวจสอบ session ของ NextAuth.js
         const data = await response.json();
-        setIsAuthenticated(data.isAuthenticated);
+        setIsAuthenticated(!!data?.user); // ถ้ามีข้อมูลผู้ใช้ ถือว่าล็อกอินแล้ว
       } catch (error) {
         console.error('Failed to check authentication status', error);
       }
@@ -41,7 +41,7 @@ const ProductsPage = () => {
 
   const handleAddToCart = async (productId) => {
     if (!isAuthenticated) {
-      router.push('/login');
+      router.push('/login'); // ถ้ายังไม่ได้ล็อกอิน ให้นำไปที่หน้า login
       return;
     }
 
