@@ -46,41 +46,60 @@ function LoginPage() {
   };
 
   return (
-<div>
-  <div className="container mx-auto py-5 max-w-md px-4">
-    <h3 className="text-2xl font-semibold text-center">Login Page</h3>
-    <hr className="my-5" />
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        className="block w-full bg-gray-200 py-2 px-4 mx-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
-        type="email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        className="block w-full bg-gray-200 py-2 px-4 mx-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
-        type="password"
-        placeholder="Enter your password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button
-        type="submit"
-        className="bg-green-500 hover:bg-green-600 p-2 rounded-md text-white transition duration-300 ease-in-out"
-      >
-        Login
-      </button>
-    </form>
-    <hr className="my-5" />
-    <p className="text-center">
-      หากยังไม่มีบัญชี? ไปที่{" "}
-      <Link className="text-blue-500 hover:text-blue-700 hover:underline transition duration-200" href="/register">Register</Link>{" "}
-      Page
-    </p>
-    {error && <p className="text-red-500 mt-3 transition duration-300 ease-in-out">{error}</p>}
-  </div>
-</div>
+    <div
+      className="relative bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: "url('/images/hsdy.png')",
+        width: "100%",
+        height: "100vh",
+      }}
+    >
+      <div className="absolute inset-0 bg-black opacity-50"></div> {/* Overlay for better readability */}
+      <div className="relative container mx-auto py-10 max-w-md px-6">
+        <div className="bg-white shadow-lg rounded-lg p-8">
+          <h3 className="text-3xl font-bold text-center text-gray-800">Login</h3>
+          <hr className="my-5 border-gray-300" />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              className="block w-full bg-gray-100 py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              className="block w-full bg-gray-100 py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out"
+            >
+              Login
+            </button>
+          </form>
+          <hr className="my-5 border-gray-300" />
+          <p className="text-center text-gray-600">
+            หากยังไม่มีบัญชี? ไปที่{" "}
+            <Link
+              className="text-blue-500 hover:text-blue-700 hover:underline transition duration-200"
+              href="/register"
+            >
+              Register
+            </Link>{" "}
+            Page
+          </p>
+          {error && (
+            <p className="text-red-500 mt-3 transition duration-300 ease-in-out text-center">
+              {error}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
