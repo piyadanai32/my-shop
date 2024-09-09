@@ -79,21 +79,13 @@ const CartPage = () => {
   };
 
   return (
-    <div
-    className="relative bg-cover bg-center bg-no-repeat"
-    style={{
-      backgroundImage: "url('/images/hsdy.png')",
-      width: "100%",
-      height: "100vh",
-    }}
-  >
-      <div className="bg-white bg-opacity-80 rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+      <div className="bg-white bg-opacity-85  rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold mb-8 text-center text-gray-900">
-        ตระกร้าสินค้าของคุณ
+        ตระกร้าสินค้าของฉัน
         </h1>
         {cartItems.length === 0 ? (
           <p className="text-lg text-gray-600 text-center">
-            ตระกร้าสินค้าของคุณว่างเปล่า
+            ไม่มีสินค้าในตระกร้าสินค้า
           </p>
         ) : (
           <ul className="space-y-6">
@@ -105,7 +97,7 @@ const CartPage = () => {
                 <img
                   src={item.product.imageUrl}
                   alt={item.product.name}
-                  className="w-24 h-24 object-cover rounded-lg border border-gray-200"
+                  className="w-24 h-29 object-cover rounded-lg border border-gray-200"
                 />
                 <div className="flex-1">
                   <h2 className="text-2xl font-semibold mb-2 text-gray-800">
@@ -149,7 +141,6 @@ const CartPage = () => {
           <ProductsS cartItems={cartItems} />
         </div>
       </div>
-    </div>
   );
     
 };

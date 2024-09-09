@@ -42,7 +42,7 @@ function RegisterPage() {
       if (res.ok) {
         setError("");
         setSuccess("ลงทะเบียนสำเร็จ");
-        setTimeout(() => router.push("/login"), 2000); // นำไปหน้า login หลัง 2 วินาที
+        setTimeout(() => router.push("/login"), 1500); 
       } else {
         setError(data.error || "เกิดข้อผิดพลาดในการลงทะเบียน");
       }
@@ -53,53 +53,68 @@ function RegisterPage() {
   };
 
   return (
-    <div>
-      <div className="container mx-auto py-5 max-w-lg px-4">
-        <h3 className="text-2xl font-semibold text-center">Register Page</h3>
-        <hr className="my-5" />
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && <div className="bg-red-500 w-fit text-white py-1 px-3 rounded-md mt-2">{error}</div>}
-          {success && <div className="bg-green-500 w-fit text-white py-1 px-3 rounded-md mt-2">{success}</div>}
-          <input
-            className="block w-full bg-gray-200 py-2 px-4 mx-2 rounded-md"
-            type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            className="block w-full bg-gray-200 py-2 px-4 mx-2 rounded-md"
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            className="block w-full bg-gray-200 py-2 px-4 mx-2 rounded-md"
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            className="block w-full bg-gray-200 py-2 px-4 mx-2 rounded-md"
-            type="password"
-            placeholder="Confirm your password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <button type="submit" className="bg-green-500 hover:bg-green-600 p-2 rounded-md text-white">
-            Sign Up
-          </button>
-        </form>
-        <hr className="my-5" />
-        <p className="text-center">
-          หากมีบัญชีแล้ว? ไปที่{" "}
-          <Link className="text-blue-500 hover:text-blue-700" href="/login">Login</Link>{" "}
-          Page
-        </p>
+    <div className="relative container mx-auto py-10 max-w-md px-6">
+        <div className="bg-white shadow-lg rounded-lg p-8">
+          <h3 className="text-3xl font-bold text-center text-gray-800">สมัครสมาชิก</h3>
+          <hr className="my-5 border-gray-300" />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="bg-red-500 w-fit text-white py-1 px-3 rounded-md mt-2">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="bg-green-500 w-fit text-white py-1 px-3 rounded-md mt-2">
+                {success}
+              </div>
+            )}
+            <input
+              className="block w-full bg-gray-100 py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              className="block w-full bg-gray-100 py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              className="block w-full bg-gray-100 py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <input
+              className="block w-full bg-gray-100 py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+              type="password"
+              placeholder="Confirm your password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-md transition duration-300 ease-in-out"
+            >
+              Sign Up
+            </button>
+          </form>
+          <hr className="my-5 border-gray-300" />
+          <p className="text-center text-gray-600">
+            หากมีบัญชีแล้ว? ไปที่{" "}
+            <Link
+              className="text-blue-500 hover:text-blue-700 hover:underline transition duration-200"
+              href="/login"
+            >
+              เข้าสู่ระบบ
+            </Link>
+          </p>
+        </div>
       </div>
-    </div>
   );
 }
 

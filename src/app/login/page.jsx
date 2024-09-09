@@ -46,18 +46,9 @@ function LoginPage() {
   };
 
   return (
-    <div
-      className="relative bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: "url('/images/hsdy.png')",
-        width: "100%",
-        height: "100vh",
-      }}
-    >
-      <div className="absolute inset-0 bg-black opacity-50"></div> {/* Overlay for better readability */}
       <div className="relative container mx-auto py-10 max-w-md px-6">
         <div className="bg-white shadow-lg rounded-lg p-8">
-          <h3 className="text-3xl font-bold text-center text-gray-800">Login</h3>
+          <h3 className="text-3xl font-bold text-center text-gray-800">เข้าสู่ระบบ</h3>
           <hr className="my-5 border-gray-300" />
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
@@ -88,9 +79,8 @@ function LoginPage() {
               className="text-blue-500 hover:text-blue-700 hover:underline transition duration-200"
               href="/register"
             >
-              Register
-            </Link>{" "}
-            Page
+              สมัครสมาชิก
+            </Link>
           </p>
           {error && (
             <p className="text-red-500 mt-3 transition duration-300 ease-in-out text-center">
@@ -99,7 +89,6 @@ function LoginPage() {
           )}
         </div>
       </div>
-    </div>
   );
 }
 

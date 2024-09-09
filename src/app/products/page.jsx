@@ -39,7 +39,7 @@ const ProductsPage = () => {
     checkAuthStatus();
   }, []);
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async (product) => {
     if (!isAuthenticated) {
       router.push('/login'); // ถ้ายังไม่ได้ล็อกอิน ให้นำไปที่หน้า login
       return;
@@ -51,69 +51,60 @@ const ProductsPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productId, quantity: 1 }),
+        body: JSON.stringify({ productId: product.id, quantity: 1 }),
       });
-      alert('Product added to cart');
+      alert(`คุณเพิ่มสินค้า ${product.name} ไปที่ตระกร้าสินค้าแล้ว`);
     } catch (error) {
       console.error('Failed to add product to cart', error);
     }
   };
 
   return (
-    <div
-    className="relative bg-cover bg-center bg-no-repeat"
-    style={{
-      backgroundImage: "url('/images/hsdy.png')",
-      width: "100%",
-      height: "180vh",
-    }}
-  >
-      <div className="bg-white bg-opacity-80 rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-10 text-center text-gray-900">
-          หน้าสินค้า
-        </h1>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
-            <li
-              key={product.id}
-              className="bg-white p-4 rounded-lg shadow-md"
-            >
-              <div className="text-center">
-                <h2 className="text-2xl font-semibold mb-2 text-gray-800">
-                  {product.name}
-                </h2>
-                <p className="text-gray-600 mb-4">{product.description}</p>
-                <p className="text-lg font-bold text-blue-500 mb-4">
-                  ราคา {product.price} บาท
-                </p>
-                <img
-                  src={product.imageUrl}
-                  alt={product.name}
-                  className="mx-auto mb-4 rounded"
-                  width={100}
-                />
-                <button
-                  onClick={() => handleAddToCart(product.id)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center justify-center mx-auto"
-                >
-                  <Icons.FaCartPlus size={24} className="mr-2" />
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className="text-center mt-8">
-          <Link
-            href="/carts"
-            className="flex items-center justify-center text-blue-500 text-lg font-semibold hover:underline"
+    <div className="bg-white bg-opacity-85 rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+      <h1 className="text-4xl font-bold mb-10 text-center text-gray-900">
+        คลังสินค้า
+      </h1>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {products.map((product) => (
+          <li
+            key={product.id}
+            className="bg-white p-4 rounded-lg shadow-md"
           >
-            <Icons.FaShoppingCart size={24} className="mr-2" />
-            ไปที่ตระกร้าสินค้า
-          </Link>
-        </div>
+            <div className="text-center">
+              <h2 className="text-2xl font-semibold mb-2 text-gray-800">
+                {product.name}
+              </h2>
+              <p className="text-gray-600 mb-4">{product.description}</p>
+              <p className="text-lg font-bold text-blue-500 mb-4">
+                ราคา {product.price} บาท
+              </p>
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="mx-auto mb-4 rounded"
+                width={100}
+              />
+              <button
+                onClick={() => handleAddToCart(product)}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center justify-center mx-auto"
+              >
+                <Icons.FaCartPlus size={24} className="mr-2" />เพิ่มสินค้าในตะกร้า
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div className="text-center mt-8">
+        <Link
+          href="/carts"
+          className="flex items-center justify-center text-blue-500 text-lg font-semibold hover:underline"
+        >
+          <Icons.FaShoppingCart size={24} className="mr-2" />
+          ตระกร้าสินค้า
+        </Link>
       </div>
     </div>
   );
-}
+};
 
 export default ProductsPage;
