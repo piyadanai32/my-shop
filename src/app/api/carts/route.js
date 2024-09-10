@@ -14,18 +14,35 @@ export async function POST(req) {
   const userId = session.user.id;
   const { productId, quantity } = await req.json();
 
-  console.log('User ID:', userId);
-  console.log('Product ID:', productId);
-  console.log('Quantity:', quantity);
-
   try {
-    const cartItem = await prisma.cartItem.create({
-      data: {
-        product: { connect: { id: productId } },
-        user: { connect: { id: userId } },
-        quantity: quantity
-      }
+    // ตรวจสอบว่าสินค้านี้มีอยู่ในตะกร้าแล้วหรือไม่
+    const existingCartItem = await prisma.cartItem.findFirst({
+      where: {
+        userId: userId,
+        productId: productId,
+      },
     });
+
+    let cartItem;
+
+    if (existingCartItem) {
+      // ถ้ามีอยู่แล้ว ให้เพิ่มจำนวน
+      cartItem = await prisma.cartItem.update({
+        where: { id: existingCartItem.id },
+        data: {
+          quantity: existingCartItem.quantity + quantity,
+        },
+      });
+    } else {
+      // ถ้าไม่มี ให้สร้างรายการใหม่
+      cartItem = await prisma.cartItem.create({
+        data: {
+          product: { connect: { id: productId } },
+          user: { connect: { id: userId } },
+          quantity: quantity,
+        },
+      });
+    }
 
     return new Response(JSON.stringify(cartItem), { status: 200 });
   } catch (error) {
