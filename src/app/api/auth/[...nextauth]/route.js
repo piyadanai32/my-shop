@@ -1,8 +1,8 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import bcrypt from "bcryptjs";
+import NextAuth from "next-auth";                                         //ใช้สำหรับการพิสูจน์ตัวตนในแอปพลิเคชัน Next.js ซึ่งช่วยในการจัดการ session การล็อกอินและการเข้าถึงข้อมูลของผู้ใช้
+import CredentialsProvider from "next-auth/providers/credentials";        //เป็น provider ของ NextAuth ที่อนุญาตให้ผู้ใช้ล็อกอินด้วยข้อมูลประจำตัว
+import { PrismaClient } from "@prisma/client";                            
+import { PrismaAdapter } from "@next-auth/prisma-adapter";                  //ทำหน้าที่เชื่อมต่อ NextAuth กับ Prisma ช่วยให้การจัดการ session
+import bcrypt from "bcryptjs";                                             //เป็นไลบรารีที่ใช้ในการเข้ารหัส (hash) และตรวจสอบรหัสผ่าน
 
 // สร้าง Prisma Client เพื่อเชื่อมต่อกับฐานข้อมูล
 const prisma = new PrismaClient();

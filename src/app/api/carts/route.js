@@ -8,7 +8,7 @@ export async function POST(req) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user || !session.user.id) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+    return new Response(JSON.stringify({ error: 'ไม่ได้รับอนุญาต' }), { status: 401 });
   }
 
   const userId = session.user.id;
@@ -46,8 +46,8 @@ export async function POST(req) {
 
     return new Response(JSON.stringify(cartItem), { status: 200 });
   } catch (error) {
-    console.error('Error adding item to cart:', error);
-    return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+    console.error('เกิดข้อผิดพลาดในการเพิ่มสินค้าลงในรถเข็น:', error);
+    return new Response(JSON.stringify({ error: 'ข้อผิดพลาดภายในเซิร์ฟเวอร์' }), { status: 500 });
   }
 }
 
@@ -56,7 +56,7 @@ export async function GET(req) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user || !session.user.id) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+    return new Response(JSON.stringify({ error: 'ไม่ได้รับอนุญาต' }), { status: 401 });
   }
 
   const userId = session.user.id;
@@ -69,8 +69,8 @@ export async function GET(req) {
 
     return new Response(JSON.stringify(cartItems), { status: 200 });
   } catch (error) {
-    console.error('Error fetching cart items:', error);
-    return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+    console.error('เกิดข้อผิดพลาดในการดึงข้อมูลสินค้าในรถเข็น:', error);
+    return new Response(JSON.stringify({ error: 'ข้อผิดพลาดภายในเซิร์ฟเวอร์' }), { status: 500 });
   }
 }
 

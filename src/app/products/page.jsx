@@ -17,7 +17,7 @@ function ProductsPage ()  {
         const data = await response.json();
         setProducts(data);
       } catch (error) {
-        console.error('Failed to fetch products', error);
+        console.error('เรียกข้อมูลสินค้าไม่สำเร็จ', error);
       }
     };
 
@@ -32,7 +32,7 @@ function ProductsPage ()  {
         const data = await response.json();
         setIsAuthenticated(!!data?.user); // ถ้ามีข้อมูลผู้ใช้ ถือว่าล็อกอินแล้ว
       } catch (error) {
-        console.error('Failed to check authentication status', error);
+        console.error('ไม่สามารถตรวจสอบสถานะการตรวจสอบสิทธิ์ได้', error);
       }
     };
 
@@ -55,7 +55,7 @@ function ProductsPage ()  {
       });
       alert(`คุณเพิ่มสินค้า ${product.name} ไปที่ตระกร้าสินค้าแล้ว`);
     } catch (error) {
-      console.error('Failed to add product to cart', error);
+      console.error('ไม่สามารถเพิ่มสินค้าลงในรถเข็นได้', error);
     }
   };
 

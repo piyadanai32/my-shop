@@ -9,7 +9,7 @@ export async function PUT(req) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user || !session.user.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'ไม่ได้รับอนุญาต' }, { status: 401 });
   }
 
   const userId = session.user.id;
@@ -17,13 +17,13 @@ export async function PUT(req) {
   const id = url.pathname.split('/').pop(); // ดึง id ออกมาจาก URL
 
   if (!id) {
-    return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+    return NextResponse.json({ error: 'รหัสไม่ถูกต้อง' }, { status: 400 });
   }
 
   const { quantity } = await req.json();
 
   if (quantity < 1) {
-    return NextResponse.json({ error: 'Quantity must be at least 1' }, { status: 400 });
+    return NextResponse.json({ error: 'จำนวนต้องมีอย่างน้อย 1' }, { status: 400 });
   }
 
   try {
@@ -32,7 +32,7 @@ export async function PUT(req) {
     });
 
     if (!cartItem) {
-      return NextResponse.json({ error: 'Item not found' }, { status: 404 });
+      return NextResponse.json({ error: 'ไม่พบรายการ' }, { status: 404 });
     }
 
     const updatedCartItem = await prisma.cartItem.update({
@@ -42,8 +42,8 @@ export async function PUT(req) {
 
     return NextResponse.json(updatedCartItem);
   } catch (error) {
-    console.error('Error updating cart item:', error);
-    return NextResponse.json({ error: 'Failed to update cart item' }, { status: 500 });
+    console.error('เกิดข้อผิดพลาดในการอัปเดตรายการในรถเข็น:', error);
+    return NextResponse.json({ error: 'ข้อผิดพลาดภายในเซิร์ฟเวอร์' }, { status: 500 });
   }
 }
 
@@ -51,7 +51,7 @@ export async function DELETE(req) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user || !session.user.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'ไม่ได้รับอนุญาต' }, { status: 401 });
   }
 
   const userId = session.user.id;
@@ -60,7 +60,7 @@ export async function DELETE(req) {
 
   // ตรวจสอบว่า id มีค่า
   if (!id) {
-    return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+    return NextResponse.json({ error: 'รหัสไม่ถูกต้อง' }, { status: 400 });
   }
 
   try {
@@ -72,16 +72,16 @@ export async function DELETE(req) {
     });
 
     if (!cartItem) {
-      return NextResponse.json({ error: 'Item not found' }, { status: 404 });
+      return NextResponse.json({ error: 'ไม่พบรายการ' }, { status: 404 });
     }
 
     await prisma.cartItem.delete({
       where: { id: id }, // ใช้ id เป็น String
     });
 
-    return NextResponse.json({ message: 'Item removed from cart successfully' });
+    return NextResponse.json({ message: 'นำสินค้าออกจากรถเข็นเรียบร้อยแล้ว' });
   } catch (error) {
-    console.error('Error removing item from cart:', error);
-    return NextResponse.json({ error: 'Failed to remove item from cart' }, { status: 500 });
+    console.error('เกิดข้อผิดพลาดในการลบรายการออกจากรถเข็น:', error);
+    return NextResponse.json({ error: 'ข้อผิดพลาดภายในเซิร์ฟเวอร์' }, { status: 500 });
   }
 }

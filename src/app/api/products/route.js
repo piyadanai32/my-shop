@@ -9,8 +9,8 @@ export async function GET() {
     const products = await prisma.product.findMany();
     return NextResponse.json(products);
   } catch (error) {
-    console.error('Error fetching products:', error); // เพิ่มการ log ข้อผิดพลาด
-    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+    console.error('เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า:', error); // เพิ่มการ log ข้อผิดพลาด
+    return NextResponse.json({ error: 'ข้อผิดพลาดภายในเซิร์ฟเวอร์' }, { status: 500 });
   }
 }
 
@@ -30,7 +30,7 @@ export async function POST(req) {
     });
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
-    console.error('Error adding product:', error); // เพิ่มการ log ข้อผิดพลาด
-    return NextResponse.json({ error: 'Failed to add product' }, { status: 500 });
+    console.error('เกิดข้อผิดพลาดในการเพิ่มสินค้า:', error); // เพิ่มการ log ข้อผิดพลาด
+    return NextResponse.json({ error: 'ข้อผิดพลาดภายในเซิร์ฟเวอร์' }, { status: 500 });
   }
 }

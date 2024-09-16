@@ -13,12 +13,12 @@ export async function GET(req) {
       where: { id: id },
     });
     if (!product) {
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+      return NextResponse.json({ error: 'ไม่พบสินค้า' }, { status: 404 });
     }
     return NextResponse.json(product);
   } catch (error) {
-    console.error('Error fetching product:', error); // เพิ่มการ log ข้อผิดพลาด
-    return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 });
+    console.error('เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า:', error); // เพิ่มการ log ข้อผิดพลาด
+    return NextResponse.json({ error: 'ข้อผิดพลาดภายในเซิร์ฟเวอร์' }, { status: 500 });
   }
 }
 
@@ -41,8 +41,8 @@ export async function PUT(req) {
     });
     return NextResponse.json(updatedProduct);
   } catch (error) {
-    console.error('Error updating product:', error); // เพิ่มการ log ข้อผิดพลาด
-    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
+    console.error('เกิดข้อผิดพลาดในการอัปเดตสินค้า:', error); // เพิ่มการ log ข้อผิดพลาด
+    return NextResponse.json({ error: 'ข้อผิดพลาดภายในเซิร์ฟเวอร์' }, { status: 500 });
   }
 }
 
@@ -55,9 +55,9 @@ export async function DELETE(req) {
     await prisma.product.delete({
       where: { id: id },
     });
-    return NextResponse.json({ message: 'Product removed successfully' });
+    return NextResponse.json({ message: 'ลบสินค้าออกเรียบร้อยแล้ว' });
   } catch (error) {
-    console.error('Error removing product:', error); // เพิ่มการ log ข้อผิดพลาด
-    return NextResponse.json({ error: 'Failed to remove product' }, { status: 500 });
+    console.error('ข้อผิดพลาดลบสินค้า:', error); // เพิ่มการ log ข้อผิดพลาด
+    return NextResponse.json({ error: 'ข้อผิดพลาดภายในเซิร์ฟเวอร์' }, { status: 500 });
   }
 }

@@ -40,7 +40,7 @@ function LoginPage() {
         router.replace("/profile");
       }
     } catch (error) {
-      console.error("Error during sign in:", error);
+      console.error("เกิดข้อผิดพลาดระหว่างการลงชื่อเข้าใช้:", error);
       setError("เกิดข้อผิดพลาดในการเข้าสู่ระบบ");
     }
   };
