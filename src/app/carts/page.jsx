@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import ProductsS from "../components/productsS";
 import * as Icons from "react-icons/fa";
 
-const CartPage = () => {
+function CartPage () {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [cartItems, setCartItems] = useState([]);

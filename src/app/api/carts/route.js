@@ -1,6 +1,6 @@
-import { getServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth/next";                                                  //ใช้สำหรับดึงข้อมูล session ของผู้ใช้จาก NextAuth
 import { PrismaClient } from "@prisma/client";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "../auth/[...nextauth]/route";                                           //การยืนยันตัวตนที่ถูกนำเข้ามาจากการตั้งค่า NextAuth
 
 const prisma = new PrismaClient();
 

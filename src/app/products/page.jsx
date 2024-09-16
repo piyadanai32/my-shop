@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import * as Icons from 'react-icons/fa';
 
-const ProductsPage = () => {
+function ProductsPage ()  {
   const [products, setProducts] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false); // จัดการสถานะการเข้าสู่ระบบ
   const router = useRouter();

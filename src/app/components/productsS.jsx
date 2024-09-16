@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProductsS = ({ cartItems }) => {
+function ProductsS ({ cartItems })  {
   const totalPrice = cartItems.reduce((total, item) => 
     total + item.product.price * item.quantity, 0
   );

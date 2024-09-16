@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';                         //ใช้สำหรับจัดการการตอบกลับ HTTP ในรูปแบบต่างๆ ใน Next.js
 
 const prisma = new PrismaClient();
 

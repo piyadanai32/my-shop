@@ -1,4 +1,4 @@
-"use client"; // เพิ่มบรรทัดนี้เพื่อบอกว่าเป็น Client Component
+"use client"; //ให้ Next.js รู้ว่าคอมโพเนนต์นี้จะทำงานบนฝั่ง Client
 
 import React, { useState, useEffect } from "react";
 import { signIn, getSession } from "next-auth/react";
