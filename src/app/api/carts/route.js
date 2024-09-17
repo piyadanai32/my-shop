@@ -5,14 +5,14 @@ import { authOptions } from "../auth/[...nextauth]/route";                      
 const prisma = new PrismaClient();
 
 export async function POST(req) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);                                                //ใช้เพื่อดึงข้อมูล session ของผู้ใช้จาก NextAuth ซึ่งช่วยในการตรวจสอบว่าใครเป็นผู้ที่กำลังทำคำร้อง
 
   if (!session || !session.user || !session.user.id) {
     return new Response(JSON.stringify({ error: 'ไม่ได้รับอนุญาต' }), { status: 401 });
   }
 
-  const userId = session.user.id;
-  const { productId, quantity } = await req.json();
+  const userId = session.user.id;                                                                           // ดึง userId จาก session ของผู้ใช้ที่ล็อกอิน
+  const { productId, quantity } = await req.json();                                                             // อ่านข้อมูล productId และจำนวน (quantity) จาก body ของ request
 
   try {
     // ตรวจสอบว่าสินค้านี้มีอยู่ในตะกร้าแล้วหรือไม่
@@ -62,9 +62,10 @@ export async function GET(req) {
   const userId = session.user.id;
 
   try {
+    // ดึงข้อมูลสินค้าที่อยู่ในตะกร้าของผู้ใช้โดยใช้ userId
     const cartItems = await prisma.cartItem.findMany({
-      where: { userId: userId },
-      include: { product: true } // Include product details if needed
+      where: { userId: userId },                                                                    // ค้นหาทุกสินค้าที่อยู่ในตะกร้าของผู้ใช้คนนี้
+      include: { product: true }                                                                    // รวมรายละเอียดของสินค้าด้วย
     });
 
     return new Response(JSON.stringify(cartItems), { status: 200 });

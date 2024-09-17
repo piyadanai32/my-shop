@@ -18,7 +18,7 @@ function Navbar() {
             </Link>
           </div>
 
-          {/* Navigation Icons */}
+          {/*ไอคอนในNabar*/}
           <ul className="flex space-x-6">
             <li>
               <Link href="/products" className="flex items-center">

@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';                                                     // นำเข้า NextResponse เพื่อส่งข้อมูลกลับในรูปแบบ JSON
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../auth/[...nextauth]/route';
+import { authOptions } from '../../auth/[...nextauth]/route';                                     // นำเข้าการยืนยันตัวตนจาก NextAuth
 
 const prisma = new PrismaClient();
 
@@ -12,9 +12,9 @@ export async function PUT(req) {
     return NextResponse.json({ error: 'ไม่ได้รับอนุญาต' }, { status: 401 });
   }
 
-  const userId = session.user.id;
-  const url = new URL(req.url);
-  const id = url.pathname.split('/').pop(); // ดึง id ออกมาจาก URL
+  const userId = session.user.id;                                                                   
+  const url = new URL(req.url);                                                                       // สร้าง object URL จาก req.url เพื่อใช้ในการแยกข้อมูล URL
+  const id = url.pathname.split('/').pop();                                                         // ดึง id ออกมาจาก URL
 
   if (!id) {
     return NextResponse.json({ error: 'รหัสไม่ถูกต้อง' }, { status: 400 });
@@ -27,6 +27,7 @@ export async function PUT(req) {
   }
 
   try {
+    // ตรวจสอบว่ารายการสินค้าในตะกร้ามีอยู่หรือไม่
     const cartItem = await prisma.cartItem.findFirst({
       where: { id: id, userId: userId }, // ใช้ id เป็น String
     });
@@ -34,7 +35,7 @@ export async function PUT(req) {
     if (!cartItem) {
       return NextResponse.json({ error: 'ไม่พบรายการ' }, { status: 404 });
     }
-
+     // อัปเดตจำนวนสินค้าในรายการตะกร้า
     const updatedCartItem = await prisma.cartItem.update({
       where: { id: id }, // ใช้ id เป็น String
       data: { quantity },
@@ -74,7 +75,8 @@ export async function DELETE(req) {
     if (!cartItem) {
       return NextResponse.json({ error: 'ไม่พบรายการ' }, { status: 404 });
     }
-
+    
+    // ลบรายการสินค้าออกจากตะกร้า
     await prisma.cartItem.delete({
       where: { id: id }, // ใช้ id เป็น String
     });

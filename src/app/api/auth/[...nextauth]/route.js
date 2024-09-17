@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";                                         //ใช้สำหรับการพิสูจน์ตัวตนในแอปพลิเคชัน Next.js ซึ่งช่วยในการจัดการ session การล็อกอินและการเข้าถึงข้อมูลของผู้ใช้
-import CredentialsProvider from "next-auth/providers/credentials";        //เป็น provider ของ NextAuth ที่อนุญาตให้ผู้ใช้ล็อกอินด้วยข้อมูลประจำตัว
+import CredentialsProvider from "next-auth/providers/credentials";        //ครีเด็นเชี่ยวโปรไวเดอร์เป็น provider ของ NextAuth ที่อนุญาตให้ผู้ใช้ล็อกอินด้วยข้อมูลประจำตัว
 import { PrismaClient } from "@prisma/client";                            
 import { PrismaAdapter } from "@next-auth/prisma-adapter";                  //ทำหน้าที่เชื่อมต่อ NextAuth กับ Prisma ช่วยให้การจัดการ session
 import bcrypt from "bcryptjs";                                             //เป็นไลบรารีที่ใช้ในการเข้ารหัส (hash) และตรวจสอบรหัสผ่าน
@@ -40,7 +40,7 @@ export const authOptions = {
   ],
   adapter: PrismaAdapter(prisma),
   session: {
-    strategy: "jwt",
+    strategy: "jwt",  //JSON Web Token
   },
   callbacks: {
     async jwt({ token, user }) {
