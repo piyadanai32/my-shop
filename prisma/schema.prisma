@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+model User {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  email     String     @unique
+  password  String
+  role      Role       @default(USER)
+  name      String
+  cartItems CartItem[] @relation("UserCartItems") // เพิ่มชื่อการเชื่อมโยง
+}
+
+model Product {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  price       Float
+  quantity    Int
+  imageUrl    String
+  cartItems   CartItem[] @relation("ProductCartItems") // เพิ่มชื่อการเชื่อมโยง
+}
+
+model CartItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId String
+  userId    String
+  quantity  Int
+  product   Product @relation("ProductCartItems", fields: [productId], references: [id])
+  user      User    @relation("UserCartItems", fields: [userId], references: [id])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
